@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Webcam</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="./css/common.css" />
+    </head>
+    <body>
+        <h2>Webcam</h2>
+        from <a href="http://simpl.info/getusermedia/">http://simpl.info/getusermedia/</a><br>
+        <video autoplay></video>
+        <script src="./js/vendor/require.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            require(['./js/require.config'], function(config) {
+                require(['custom/webcam'], function(webcam) {
+                    webcam.init();
+                });
+            });
+        </script>
+    </body>
+</html>

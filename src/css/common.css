@@ -1,0 +1,19 @@
+body{
+    background-color: #EFEFEF;
+    font-family: Verdana,Geneva,Arial,Helvetica,sans-serif;
+    font-size: 80%;
+    line-height: 1.5em;
+    overflow-y: scroll;
+}
+a, strong,h1,h2{
+    color:#900000;
+}
+/** copyright */
+.copyright{
+    text-align: center;
+    font-size: 10px;
+    color:#62686A;
+}
+.copyright a{
+    color:#62686A;
+}
