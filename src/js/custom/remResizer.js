@@ -4,25 +4,19 @@ define(function(){
     
     /**
      * Returns the font-size of the <html> element (set in px @mandatory)
-     * @param {Object} options
-     *      @baseFontSize in rem @optional
      * @returns {Number}
      */
-    function getBaseFontSize(options){
+    function getBaseFontSize(){
         var baseFontSize,
-            htmlElement;
-        if(options && options.baseFontSize){
-            baseFontSize = options.baseFontSize;
-        }
-        else{
             htmlElement = document.getElementsByTagName("html")[0];
-            baseFontSize = htmlElement.style['fontSize'] !== "" ? htmlElement.style['fontSize'] : window.getComputedStyle(htmlElement)['fontSize'];
-            if(!baseFontSize){
-                throw new Error("No font-size specified for the <html> tag (or in baseFontSize options)");
-            }
+    
+        baseFontSize = htmlElement.style['fontSize'] !== "" ? htmlElement.style['fontSize'] : window.getComputedStyle(htmlElement)['fontSize'];
+        //even if not set by user, should be set by the navigator, but test anyway
+        if(!baseFontSize){
+            throw new Error("No font-size specified for the <html> tag");
         }
         if(baseFontSize.indexOf('px') < 0){
-            throw new Error("Only px supported for <html> tag or baseFontSize");
+            throw new Error("Only px supported for <html> tag");
         }
         return parseFloat(baseFontSize);
     }
@@ -43,10 +37,10 @@ define(function(){
      * Returns the size of the window
      * @returns {Object}
      */
-    function getWindowSize(){
+    function getWindowSize(element){
         return{
-            "width" : window.innerWidth,
-            "height" : window.innerHeight
+            "width" : element ? element.innerWidth : window.innerWidth,
+            "height" : element ? element.innerHeight : window.innerHeight
         };
     }
     
@@ -69,20 +63,28 @@ define(function(){
     
     remResizer = {
         
-        init: function(targetElement, options){
+        /**
+         * Resizes your targetElement in full window and adds a resize eventListener that will resize this element by changing the font-size, fitting it to the window (whatever the ratio of your window or element)
+         * @param {DOMElement} targetElement
+         */
+        init: function(targetElement){
             
-            var originalFontSize = getBaseFontSize(options),
-                currentFontSize = originalFontSize,
-                originalWindowSize = getWindowSize(),
+            var originalFontSize = getBaseFontSize(),
                 originalTargetElementSize = getElementSize(targetElement),
-                currentTargetElementSize = originalTargetElementSize,
-                ratio = getRatio(originalWindowSize,originalTargetElementSize),
+                ratio = getRatio(getWindowSize(),originalTargetElementSize),
                 htmlelement = document.getElementsByTagName("html")[0],
                 resizer;
-        
+            
+            //init the size
             htmlelement.style.fontSize = (ratio*originalFontSize)+"px";
-        
-            console.log('remResizer.init()',ratio);
+            
+            resizer = function(e){
+                var ratio;
+                ratio = getRatio(getWindowSize(e.target),originalTargetElementSize);
+                htmlelement.style.fontSize = (ratio*originalFontSize)+"px";
+            };
+            
+            window.addEventListener('resize',resizer,false);
             
         }
         
