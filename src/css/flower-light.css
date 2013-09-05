@@ -19,10 +19,13 @@ body{
 }
 #flower{
     position: relative;
+    left:50%;
+    margin-left:-160rem;
+    top:50%;
+    margin-top:-120rem;
     width:320rem;
     height:240rem;
     display: block;
-    margin : 20rem auto;
     
     border: 1px solid black;
 }
