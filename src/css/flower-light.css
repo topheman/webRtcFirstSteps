@@ -38,6 +38,11 @@ body{
     display: block;
     
     border: 1px solid aqua;
+    
+    -webkit-animation: tilt-head 1.5s infinite;
+       -moz-animation: tilt-head 1.5s infinite;
+         -o-animation: tilt-head 1.5s infinite;
+            animation: tilt-head 1.5s infinite;
 }
 #flower-rod{
     position: absolute;
@@ -58,4 +63,16 @@ body{
     display: block;
     
     border: 1px solid brown;
+}
+
+@-webkit-keyframes tilt-head{
+    0%{
+        border-color: aqua;
+    }
+    50%{
+        border-color: red;
+        /*-webkit-transform: rotateY(50deg);*/
+        -webkit-transform: translate(10rem,0rem);
+    }
+    100%{border-color: aqua;}
 }
