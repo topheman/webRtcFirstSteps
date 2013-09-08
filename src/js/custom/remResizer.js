@@ -67,7 +67,7 @@ define(function(){
          * Resizes your targetElement in full window and adds a resize eventListener that will resize this element by changing the font-size, fitting it to the window (whatever the ratio of your window or element)
          * @param {DOMElement} targetElement
          */
-        init: function(targetElement){
+        init: function(targetElement, resizeCallback){
             
             var originalFontSize = getBaseFontSize(),
                 originalTargetElementSize = getElementSize(targetElement),
@@ -79,9 +79,13 @@ define(function(){
             htmlelement.style.fontSize = (ratio*originalFontSize)+"px";
             
             resizer = function(e){
-                var ratio;
+                var ratio, currentFontSize;
                 ratio = getRatio(getWindowSize(e.target),originalTargetElementSize);
-                htmlelement.style.fontSize = (ratio*originalFontSize)+"px";
+                currentFontSize = ratio*originalFontSize;
+                htmlelement.style.fontSize = currentFontSize+"px";
+                if(typeof resizeCallback === "function"){
+                    resizeCallback.call({},currentFontSize,originalFontSize);
+                }
             };
             
             window.addEventListener('resize',resizer,false);
