@@ -66,6 +66,13 @@ define(function(){
         /**
          * Resizes your targetElement in full window and adds a resize eventListener that will resize this element by changing the font-size, fitting it to the window (whatever the ratio of your window or element)
          * @param {DOMElement} targetElement
+         * @param {Function} resizeCallback function(e,infos) { ... }
+         *      * {ResizeEvent} e
+         *      * {DomElement} infos.targetElement
+         *      * {String} infos.width computed width of infos.targetElement after resize (in px)
+         *      * {String} infos.height computed height of infos.targetElement after resize (in px)
+         *      * {Number} infos.currentFontSize of the html element (in px)
+         *      * {Number} infos.originalFontSize of the html element (in px)
          */
         init: function(targetElement, resizeCallback){
             
@@ -75,19 +82,27 @@ define(function(){
                 htmlelement = document.getElementsByTagName("html")[0],
                 resizer;
             
-            //init the size
-            htmlelement.style.fontSize = (ratio*originalFontSize)+"px";
-            
             resizer = function(e){
                 var ratio, currentFontSize;
                 ratio = getRatio(getWindowSize(e.target),originalTargetElementSize);
                 currentFontSize = ratio*originalFontSize;
                 htmlelement.style.fontSize = currentFontSize+"px";
                 if(typeof resizeCallback === "function"){
-                    resizeCallback.call({},currentFontSize,originalFontSize);
+                    var infos = {},
+                        computedStyles = getComputedStyle(targetElement);
+                    infos.targetElement = targetElement;
+                    infos.width = computedStyles.width;
+                    infos.height = computedStyles.height;
+                    infos.currentFontSize = currentFontSize;
+                    infos.originalFontSize = originalFontSize;
+                    resizeCallback.call({},e,infos);
                 }
             };
             
+            //init (will trigger the resizeCallback)
+            resizer({target:window});
+            
+            //add the listener
             window.addEventListener('resize',resizer,false);
             
         }

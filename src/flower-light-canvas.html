@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flower light canvas</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="./css/flower-light-canvas.css" />
+    </head>
+    <body>
+        <div id="container">
+            <div id="sky">
+                <div id="sun"></div>
+                <div class="cloud x2"></div>
+                <div class="cloud x3"></div>
+                <div class="cloud x4"></div>
+                <div class="cloud x5"></div>
+            </div>
+            <div id="ground">
+                
+            </div>
+            <canvas id="flower"></canvas>
+        </div>
+        <script src="./js/vendor/require.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            require(['./js/require.config'], function(config) {
+                require(['custom/flowerLightCanvas'], function(flowerLightCanvas) {
+                    flowerLightCanvas.init();
+                });
+            });
+        </script>
+    </body>
+</html>
+    
